@@ -29,7 +29,7 @@
         {% elif categoria_nombre %}
             Categoría: {{ categoria_nombre }}
         {% else %}
-            Todos los Juegos
+            Todos los Juegos ({{ total_juegos }})
         {% endif %}
     </h2>
 
@@ -47,10 +47,14 @@
                     <p class="desarrolladora">{{ juego.desarrolladora.nombre }}</p>
                 </div>
                 <a href="{% url 'detalle_juego' juego.id %}" class="btn-ver">Ver Detalles</a>
-                {% if user.is_superuser %}
+                {% if perms.tienda.change_juego or perms.tienda.delete_juego %}
                 <div class="tarjeta-admin">
-                    <a href="{% url 'editar_juego' juego.id %}" class="btn-editar">✏ Editar</a>
-                    <a href="{% url 'eliminar_juego' juego.id %}" class="btn-borrar">🗑 Eliminar</a>
+                    {% if perms.tienda.change_juego %}
+                        <a href="{% url 'editar_juego' juego.id %}" class="btn-editar">✏ Editar</a>
+                    {% endif %}
+                    {% if perms.tienda.delete_juego %}
+                        <a href="{% url 'eliminar_juego' juego.id %}" class="btn-borrar">🗑 Eliminar</a>
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>

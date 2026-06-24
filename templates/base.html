@@ -19,8 +19,11 @@
             {% if user.is_authenticated %}
                 <a href="{% url 'tienda' %}">Tienda</a>
 
-                {% if user.is_superuser %}
+                {% if perms.tienda.add_juego %}
                     <a href="{% url 'crear_juego' %}" class="btn-dev">⚙ Agregar Juego</a>
+                {% endif %}
+                {% if perms.tienda.add_categoria %}
+                    <a href="{% url 'crear_categoria' %}" class="btn-dev">⚙ Agregar Categoría</a>
                 {% endif %}
 
                 <span class="navbar-user">

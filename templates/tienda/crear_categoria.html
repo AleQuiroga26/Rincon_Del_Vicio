@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Agregar Categoría - Rincón del Vicio{% endblock %}
+
+{% block contenido %}
+
+<section class="crud-container">
+    <h2>Agregar Nueva Categoría</h2>
+    <form method="post" class="crud-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary">Agregar Categoría</button>
+        <a href="{% url 'tienda' %}" class="btn-cancelar">Cancelar</a>
+    </form>
+</section>
+
+{% endblock %}

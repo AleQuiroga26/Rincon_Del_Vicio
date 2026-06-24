@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from .models import Juego, Categoria
-from .forms import JuegoForm
+from .forms import JuegoForm, CategoriaForm
 
 @login_required
 def tienda(request):
@@ -36,7 +36,7 @@ def detalle_juego(request, id):
     juego = get_object_or_404(Juego, id=id)
     return render(request, 'tienda/detalle.html', {'juego': juego})
 
-@login_required
+@permission_required('tienda.add_juego', raise_exception=True)
 def crear_juego(request):
     if request.method == 'POST':
         form = JuegoForm(request.POST, request.FILES)
@@ -47,7 +47,7 @@ def crear_juego(request):
         form = JuegoForm()
     return render(request, 'tienda/crear_juego.html', {'form': form})
 
-@login_required
+@permission_required('tienda.change_juego', raise_exception=True)
 def editar_juego(request, id):
     juego = get_object_or_404(Juego, id=id)
     if request.method == 'POST':
@@ -59,10 +59,46 @@ def editar_juego(request, id):
         form = JuegoForm(instance=juego)
     return render(request, 'tienda/editar_juego.html', {'form': form})
 
-@login_required
+@permission_required('tienda.delete_juego', raise_exception=True)
 def eliminar_juego(request, id):
     juego = get_object_or_404(Juego, id=id)
     if request.method == 'POST':
         juego.delete()
         return redirect('tienda')
     return render(request, 'tienda/eliminar_juego.html', {'juego': juego})
+
+# ==========================================
+# CRUD CATEGORÍAS
+# ==========================================
+
+@permission_required('tienda.add_categoria', raise_exception=True)
+def crear_categoria(request):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('tienda')
+    else:
+        form = CategoriaForm()
+    return render(request, 'tienda/crear_categoria.html', {'form': form})
+
+@permission_required('tienda.change_categoria', raise_exception=True)
+def editar_categoria(request, id):
+    categoria = get_object_or_404(Categoria, id=id)
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST, instance=categoria)
+        if form.is_valid():
+            form.save()
+            return redirect('tienda')
+    else:
+        form = CategoriaForm(instance=categoria)
+    return render(request, 'tienda/editar_categoria.html', {'form': form})
+
+@permission_required('tienda.delete_categoria', raise_exception=True)
+def eliminar_categoria(request, id):
+    categoria = get_object_or_404(Categoria, id=id)
+    if request.method == 'POST':
+        categoria.delete()
+        return redirect('tienda')
+    return render(request, 'tienda/eliminar_categoria.html', {'categoria': categoria})
+

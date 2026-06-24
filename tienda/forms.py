@@ -1,5 +1,10 @@
 from django import forms
-from .models import Juego
+from .models import Juego, Categoria
+
+class CategoriaForm(forms.ModelForm):
+    class Meta:
+        model = Categoria
+        fields = ['nombre', 'descripcion']
 
 class JuegoForm(forms.ModelForm):
     class Meta:

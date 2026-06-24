@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Eliminar Categoría - Rincón del Vicio{% endblock %}
+
+{% block contenido %}
+
+<section class="crud-container">
+    <h2>¿Estás seguro de que querés eliminar esta categoría?</h2>
+    <div class="eliminar-info">
+        <p class="eliminar-titulo">{{ categoria.nombre }}</p>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-eliminar">Sí, Eliminar</button>
+        <a href="{% url 'tienda' %}" class="btn-cancelar">No, Cancelar</a>
+    </form>
+</section>
+
+{% endblock %}
