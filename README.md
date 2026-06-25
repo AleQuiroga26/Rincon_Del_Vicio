@@ -34,8 +34,7 @@ La aplicación maneja estos aspectos :
    ```bash
    python manage.py makremigrations
    ```
-   +
-      ```bash
+   ```bash
    python manage.py migrate
    ```
 5. ¡Enciende el servidor!
