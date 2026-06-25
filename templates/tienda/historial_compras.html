@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Historial de Compras - Rincón del Vicio{% endblock %}
+
+{% block contenido %}
+<div class="crud-container" style="max-width: 800px;">
+    <h2>Mi Historial de Compras</h2>
+    
+    {% if compras %}
+        <p style="text-align: center; font-size: 1.1em;">
+            Has comprado {{ compras.count }} juego{{ compras.count|pluralize }} y has gastado <strong style="color: #2ecc71;">USD ${{ total_gastado }}</strong> en total.
+        </p>
+        
+        <table class="crud-table" style="width: 100%; margin-top: 25px; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 2px solid rgba(77, 168, 218, 0.3);">
+                    <th style="padding: 12px; text-align: left; color: #4da8da;">Portada</th>
+                    <th style="padding: 12px; text-align: left; color: #4da8da;">Juego</th>
+                    <th style="padding: 12px; text-align: left; color: #4da8da;">Fecha de Compra</th>
+                    <th style="padding: 12px; text-align: left; color: #4da8da;">Precio Pagado</th>
+                    <th style="padding: 12px; text-align: center; color: #4da8da;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for compra in compras %}
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                        <td style="padding: 12px;">
+                            {% if compra.juego.portada %}
+                                <img src="{{ compra.juego.portada.url }}" alt="{{ compra.juego.titulo }}" style="width: 60px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #333;">
+                            {% else %}
+                                <div style="width: 60px; height: 80px; background-color: #1a1a24; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 1.5em; border: 1px solid #333;">🎮</div>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 12px; font-weight: bold; color: #e0e0e0;">{{ compra.juego.titulo }}</td>
+                        <td style="padding: 12px; color: #a0a0a0;">{{ compra.fecha_compra|date:"d/m/Y H:i" }}</td>
+                        <td style="padding: 12px; color: #2ecc71; font-weight: bold;">USD ${{ compra.precio_compra }}</td>
+                        <td style="padding: 12px; text-align: center;">
+                            <a href="{% url 'detalle_juego' compra.juego.id %}" class="btn-dev" style="padding: 6px 12px; font-size: 0.85em; text-decoration: none;">Ir al Juego</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div style="text-align: center; padding: 50px 20px;">
+            <p style="font-size: 1.2em; color: #a0a0a0; margin-bottom: 20px;">Aún no has comprado ningún juego.</p>
+            <a href="{% url 'tienda' %}" class="btn-primary" style="display: inline-block; width: auto; text-decoration: none; padding: 12px 30px;">Explorar la Tienda</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

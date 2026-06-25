@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
-from .models import Juego, Categoria
+from django.contrib import messages
+from .models import Juego, Categoria, Compra
 from .forms import JuegoForm, CategoriaForm
 
 @login_required
@@ -34,7 +35,8 @@ def tienda(request):
 @login_required
 def detalle_juego(request, id):
     juego = get_object_or_404(Juego, id=id)
-    return render(request, 'tienda/detalle.html', {'juego': juego})
+    ya_comprado = Compra.objects.filter(usuario=request.user, juego=juego).exists()
+    return render(request, 'tienda/detalle.html', {'juego': juego, 'ya_comprado': ya_comprado})
 
 @permission_required('tienda.add_juego', raise_exception=True)
 def crear_juego(request):
@@ -102,3 +104,34 @@ def eliminar_categoria(request, id):
         return redirect('tienda')
     return render(request, 'tienda/eliminar_categoria.html', {'categoria': categoria})
 
+# ==========================================
+# COMPRAS Y BIBLIOTECA
+# ==========================================
+
+@login_required
+def comprar_juego(request, id):
+    if request.method == 'POST':
+        juego = get_object_or_404(Juego, id=id)
+        
+        # Verificar si ya lo compró
+        if Compra.objects.filter(usuario=request.user, juego=juego).exists():
+            messages.warning(request, f"Ya tienes {juego.titulo} en tu biblioteca.")
+        else:
+            Compra.objects.create(
+                usuario=request.user,
+                juego=juego,
+                precio_compra=juego.precio
+            )
+            messages.success(request, f"¡Has comprado {juego.titulo} con éxito!")
+            
+        return redirect('historial_compras')
+    return redirect('tienda')
+
+@login_required
+def historial_compras(request):
+    compras = Compra.objects.filter(usuario=request.user).order_by('-fecha_compra')
+    total_gastado = sum(compra.precio_compra for compra in compras)
+    return render(request, 'tienda/historial_compras.html', {
+        'compras': compras,
+        'total_gastado': total_gastado
+    })

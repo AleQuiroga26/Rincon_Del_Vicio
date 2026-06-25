@@ -50,7 +50,15 @@
 
         <div class="acciones-detalle">
             <a href="{% url 'tienda' %}" class="btn-volver">← Volver a la Tienda</a>
-            <a href="#" class="btn-comprar">Comprar Juego</a>
+            
+            {% if ya_comprado %}
+                <span class="btn-comprado">✓ En tu biblioteca</span>
+            {% else %}
+                <form action="{% url 'comprar_juego' juego.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-comprar" style="border: none; cursor: pointer; font-size: 1em;">Comprar Juego</button>
+                </form>
+            {% endif %}
         </div>
     </div>
 </section>

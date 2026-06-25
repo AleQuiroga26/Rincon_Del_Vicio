@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.conf import settings
+
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
     descripcion = models.TextField(blank=True, null=True)
@@ -45,3 +47,12 @@ class Juego(models.Model):
 
     def __str__(self):
         return self.titulo
+
+class Compra(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='compras')
+    juego = models.ForeignKey(Juego, on_delete=models.CASCADE, related_name='compras')
+    fecha_compra = models.DateTimeField(auto_now_add=True)
+    precio_compra = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.usuario.username} compró {self.juego.titulo} por ${self.precio_compra}"

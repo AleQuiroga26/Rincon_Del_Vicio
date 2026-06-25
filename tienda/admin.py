@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Categoria, Desarrolladora, Plataforma, RequisitosSistema, Juego
+from .models import Categoria, Desarrolladora, Plataforma, RequisitosSistema, Juego, Compra
 
 @admin.register(Categoria)
 class CategoriaAdmin(admin.ModelAdmin):
@@ -27,3 +27,9 @@ class JuegoAdmin(admin.ModelAdmin):
     list_filter = ('categorias', 'desarrolladora', 'plataformas')
     search_fields = ('titulo', 'descripcion')
     ordering = ('titulo',)
+
+@admin.register(Compra)
+class CompraAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'juego', 'precio_compra', 'fecha_compra')
+    list_filter = ('fecha_compra', 'juego')
+    search_fields = ('usuario__username', 'juego__titulo')

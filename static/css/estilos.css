@@ -753,3 +753,49 @@ body {
 .btn-eliminar:hover {
     background-color: #c82333;
 }
+
+/* =============================================
+   MENSAJES DE FEEDBACK Y COMPRAS
+   ============================================= */
+.messages {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.alert-success {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: #2ecc71;
+    border: 1px solid rgba(40, 167, 69, 0.4);
+}
+
+.alert-warning {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: #f1c40f;
+    border: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+.alert-error, .alert-danger {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #e74c3c;
+    border: 1px solid rgba(220, 53, 69, 0.4);
+}
+
+.btn-comprado {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: rgba(77, 168, 218, 0.15);
+    color: #4da8da;
+    border-radius: 6px;
+    font-weight: bold;
+    border: 1px solid rgba(77, 168, 218, 0.3);
+    cursor: default;
+}
